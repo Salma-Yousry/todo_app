@@ -43,6 +43,7 @@ class MyThemeData{
         fontWeight: FontWeight.w500,
         color: AppColors.redColor,
       ),
+
     ),
 
     bottomNavigationBarTheme: BottomNavigationBarThemeData(

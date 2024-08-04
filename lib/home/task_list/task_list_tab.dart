@@ -1,12 +1,23 @@
-import 'package:app_todo/app_color.dart';
+
+import 'package:app_todo/firebase_utils.dart';
 import 'package:app_todo/home/task_list/task_list_item.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/cupertino.dart';
 
-class TaskListTab extends StatelessWidget {
+import '../../model/task.dart';
+
+class TaskListTab extends StatefulWidget{
+  @override
+  State<TaskListTab> createState() => _TaskListTabState();
+}
+
+class _TaskListTabState extends State<TaskListTab> {
+  List<Task> tasklist =[];
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: [
         EasyDateTimeLine(
@@ -14,7 +25,7 @@ class TaskListTab extends StatelessWidget {
           onDateChange: (selectedDate) {
             //`selectedDate` the new date selected.
           },
-           headerProps: const EasyHeaderProps(
+          headerProps: const EasyHeaderProps(
             monthPickerType: MonthPickerType.switcher,
             dateFormatter: DateFormatter.fullDateDMY(),
           ),
@@ -37,13 +48,27 @@ class TaskListTab extends StatelessWidget {
         ),
         Expanded(
           child: ListView.builder(
-              itemBuilder:(context,index) {
-                return TaskListItem();
-              },
+            itemBuilder: (context, index) {
+             // return TaskListItem(task: tasklist[index],);
+              return TaskListItem();
+
+            },
+           // itemCount: tasklist.length,
             itemCount: 30,
-              ),
+          ),
         )
       ],
     );
   }
+
+  /*void getAllTasksFromFireStore()async{
+    QuerySnapshot<Task> querySnapshot= await FireBaseUtils.getTaskCollection().get();
+    //List<QueryDocumentSnapshot<Task>>  => List <Task>
+    tasklist = querySnapshot.docs.map((doc){
+      return doc.data();
+    }).toList();
+    setState(() {
+
+    });
+  }*/
 }

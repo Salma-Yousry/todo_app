@@ -1,6 +1,7 @@
 import 'package:app_todo/model/task.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 class FireBaseUtils{
   ///لو مستخدم اكتر من method في نفس الجملة ال type هنقف عند اخر method فيهم
   static CollectionReference<Task> getTaskCollection(){

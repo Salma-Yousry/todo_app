@@ -1,5 +1,5 @@
 import 'package:app_todo/app_color.dart';
-import 'package:app_todo/home/settings/setting_tab.dart';
+import 'package:app_todo/home/settings/settings_tab.dart';
 import 'package:app_todo/home/task_list/add_task_button_sheet.dart';
 import 'package:app_todo/home/task_list/task_list_tab.dart';
 import 'package:flutter/cupertino.dart';

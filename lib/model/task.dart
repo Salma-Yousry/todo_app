@@ -19,7 +19,7 @@ class Task {
     description: data['description'] as String,
     ///fromMillisecondsSinceEpoch عشن نرجعه integer عشن مخزنينه integer
     dateTime: DateTime.fromMillisecondsSinceEpoch(data['dateTime']) ,
-    isDone: data['isDone'] as bool
+    isDone: data['isDone'] as bool,
   );
   ///object => json
   Map <String, dynamic> toFireStore() {
