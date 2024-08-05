@@ -6,8 +6,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../model/task.dart';
 
 class TaskListItem extends StatelessWidget {
- // Task task;
- //TaskListItem({required this.task});
+  Task task;
+ TaskListItem({required this.task});
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -52,11 +52,11 @@ class TaskListItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('task.title',style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  Text(task.title??'',style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: AppColors.primaryColor
                   ),),
                   SizedBox(height: 10,),
-                  Text('task.description',style:Theme.of(context).textTheme.titleMedium),
+                  Text(task.description??'',style:Theme.of(context).textTheme.titleMedium),
                 ],
               ),
             ),

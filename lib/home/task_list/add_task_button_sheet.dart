@@ -122,7 +122,10 @@ child: Column(
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 365)));
     ///Date time    Date time?
-        selectdate=chosendate ?? selectdate;
+       // selectdate=ch ?? selectdate;
+    if(chosendate!=null){
+      selectdate = chosendate;
+    }
         setState(() {
 
         });
@@ -135,14 +138,17 @@ child: Column(
   void addtask() {
     if(formkay.currentState?.validate()==true){
       //add task
+      print(selectdate);
       Task task = Task(title: title,
           description: description,
-          dateTime: selectdate);
+          dateTime: selectdate
+       );
       FireBaseUtils.addTaskToFireBase(task).timeout(Duration(seconds: 1),
           onTimeout: (){
         print('Task added successfully');
         Navigator.pop(context);
           });
+      print(task.dateTime);
     }
   }
 }

@@ -16,14 +16,17 @@ void main() async {
   Platform.isAndroid ?
   await Firebase.initializeApp(
     options: FirebaseOptions(
-        apiKey: 'AIzaSyDv0nZvTGFx8niDTWtHUxFVj7XlVLAZcuA',
-        appId: 'com.example.app_todo',
-        messagingSenderId: '158196967782',
-        projectId: 'todo-app-b5330')
+        apiKey: "AIzaSyDv0nZvTGFx8niDTWtHUxFVj7XlVLAZcuA",
+        appId: "com.example.app_todo",
+        messagingSenderId: "158196967782",
+        projectId: "todo-app-b5330")
   )
       :
-  await FirebaseFirestore.instance.disableNetwork();
   await Firebase.initializeApp();
+  await FirebaseFirestore.instance.disableNetwork();
+  FirebaseFirestore.instance.settings =
+      Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
+
 
 
  runApp(

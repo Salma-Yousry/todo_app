@@ -9,13 +9,13 @@ class FireBaseUtils{
       FirebaseFirestore.instance.collection(Task.collectionName).
       ///withConverter بتدي نوع لل database بتخزن ايه
       withConverter<Task>
-        (fromFirestore: ((snapshot,options) => Task.fromFireStore(snapshot.data()!)),
+        (fromFirestore: (snapshot,options) => Task.fromFireStore(snapshot.data()!),
           toFirestore: (task,options)=> task.toFireStore());
   }
   //addTask
   static Future<void> addTaskToFireBase(Task task){
 var taskCollectionRef = getTaskCollection(); ///Collection
-    DocumentReference<Task> taskDocRef = taskCollectionRef.doc(); ///document
+  var taskDocRef = taskCollectionRef.doc(); ///document
    task.id =  taskDocRef.id; ///auto id
    return taskDocRef.set(task);
 

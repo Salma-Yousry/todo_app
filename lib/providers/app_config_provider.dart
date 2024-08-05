@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../firebase_utils.dart';
+import '../model/task.dart';
+
 
 class AppConfigProvider extends ChangeNotifier {
+  List <Task> tasklist =[];
  //data
   String appLanguage = 'en';
   ThemeMode appTheme = ThemeMode.light;
@@ -43,5 +48,14 @@ class AppConfigProvider extends ChangeNotifier {
     appTheme =  prefs.getBool('theme') ?? false ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
+  void getAllTasksFromFireStore()async{
+    QuerySnapshot<Task> querySnapshot= await FireBaseUtils.getTaskCollection().get();
+    //List<QueryDocumentSnapshot<Task>>  => List <Task>
+    tasklist = querySnapshot.docs.map((doc){
+      return doc.data();
+    }).toList();
+    notifyListeners();
+  }
 }
+
 

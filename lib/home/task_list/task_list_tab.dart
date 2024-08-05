@@ -1,11 +1,11 @@
-
-import 'package:app_todo/firebase_utils.dart';
 import 'package:app_todo/home/task_list/task_list_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:provider/provider.dart';
+import '../../firebase_utils.dart';
 import '../../model/task.dart';
+import '../../providers/app_config_provider.dart';
 
 class TaskListTab extends StatefulWidget{
   @override
@@ -13,10 +13,14 @@ class TaskListTab extends StatefulWidget{
 }
 
 class _TaskListTabState extends State<TaskListTab> {
-  List<Task> tasklist =[];
+
 
   @override
   Widget build(BuildContext context) {
+    var provider  = Provider.of<AppConfigProvider>(context);
+    if(provider.tasklist.isEmpty){
+      provider.getAllTasksFromFireStore();
+    }
 
     return Column(
       children: [
@@ -49,26 +53,17 @@ class _TaskListTabState extends State<TaskListTab> {
         Expanded(
           child: ListView.builder(
             itemBuilder: (context, index) {
-             // return TaskListItem(task: tasklist[index],);
-              return TaskListItem();
+              return TaskListItem(task: provider.tasklist[index],);
+              //return TaskListItem();
 
             },
-           // itemCount: tasklist.length,
-            itemCount: 30,
+            itemCount: provider.tasklist.length,
+            //itemCount: 30,
           ),
         )
       ],
     );
   }
 
-  /*void getAllTasksFromFireStore()async{
-    QuerySnapshot<Task> querySnapshot= await FireBaseUtils.getTaskCollection().get();
-    //List<QueryDocumentSnapshot<Task>>  => List <Task>
-    tasklist = querySnapshot.docs.map((doc){
-      return doc.data();
-    }).toList();
-    setState(() {
 
-    });
-  }*/
 }
