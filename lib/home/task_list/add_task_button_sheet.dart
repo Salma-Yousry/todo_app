@@ -3,8 +3,12 @@ import 'package:app_todo/firebase_utils.dart';
 import 'package:app_todo/model/task.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/listprovider.dart';
 
 class AddTaskButtonSheet extends StatefulWidget {
+
 
   @override
   State<AddTaskButtonSheet> createState() => _AddTaskButtonSheetState();
@@ -18,9 +22,10 @@ class _AddTaskButtonSheetState extends State<AddTaskButtonSheet> {
 //data of textFromField
   String title = '';
   String description= '';
-
+ late ListProvider listprovider;
   @override
   Widget build(BuildContext context) {
+    listprovider  = Provider.of<ListProvider>(context);
 //button sheet
     return Container(
       margin: EdgeInsets.all(15),
@@ -146,6 +151,7 @@ child: Column(
       FireBaseUtils.addTaskToFireBase(task).timeout(Duration(seconds: 1),
           onTimeout: (){
         print('Task added successfully');
+        listprovider.getAllTasksFromFireStore();
         Navigator.pop(context);
           });
       print(task.dateTime);

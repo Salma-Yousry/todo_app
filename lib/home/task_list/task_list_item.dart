@@ -1,15 +1,20 @@
 import 'package:app_todo/app_color.dart';
+import 'package:app_todo/firebase_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 
 import '../../model/task.dart';
+import '../../providers/listprovider.dart';
 
 class TaskListItem extends StatelessWidget {
+
   Task task;
  TaskListItem({required this.task});
   @override
   Widget build(BuildContext context) {
+    var listprovider  = Provider.of<ListProvider>(context);
     return Slidable(
       // The start action pane is the one at the left or the top side.
       startActionPane: ActionPane(
@@ -22,7 +27,12 @@ class TaskListItem extends StatelessWidget {
     SlidableAction(
       borderRadius: BorderRadius.circular(15),
     onPressed:(context){
-
+//delete task
+    FireBaseUtils.deleteTaskFromFireStore(task.id)
+        .timeout(Duration(milliseconds: 500),onTimeout:(){
+          print('Task Deleted Successfully');
+          listprovider.getAllTasksFromFireStore();
+    });
     },
     backgroundColor:AppColors.redColor,
     foregroundColor: AppColors.whiteColor,
@@ -34,7 +44,7 @@ class TaskListItem extends StatelessWidget {
       ],
     ),
       child: Container(
-        margin: EdgeInsets.all(22),
+        margin: EdgeInsets.all(12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: AppColors.whiteColor
@@ -52,10 +62,11 @@ class TaskListItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 6,),
                   Text(task.title??'',style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: AppColors.primaryColor
                   ),),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 6,),
                   Text(task.description??'',style:Theme.of(context).textTheme.titleMedium),
                 ],
               ),
@@ -68,6 +79,7 @@ class TaskListItem extends StatelessWidget {
                 color: AppColors.primaryColor,
               ),
               child: IconButton(onPressed: (){
+
               }, icon: Icon(Icons.check,size: 36,),color: AppColors.whiteColor,),
             ),
 

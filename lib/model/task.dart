@@ -1,10 +1,10 @@
 class Task {
   static const String collectionName = 'tasks';
 
-  String? id;
-  String? title;
-  String? description;
-  DateTime? dateTime;
+  String id;
+  String title;
+  String description;
+  DateTime dateTime;
   bool? isDone;
 
   Task(
@@ -28,7 +28,7 @@ class Task {
       'title': title,
       'description': description,
       ///millisecondsSinceEpoch نخزنه integer
-      'dateTime': dateTime!.millisecondsSinceEpoch,
+      'dateTime': dateTime.millisecondsSinceEpoch,
       'isDone': isDone
     };
   }

@@ -1,11 +1,9 @@
 import 'package:app_todo/home/task_list/task_list_item.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import '../../firebase_utils.dart';
-import '../../model/task.dart';
 import '../../providers/app_config_provider.dart';
+import '../../providers/listprovider.dart';
 
 class TaskListTab extends StatefulWidget{
   @override
@@ -17,17 +15,18 @@ class _TaskListTabState extends State<TaskListTab> {
 
   @override
   Widget build(BuildContext context) {
-    var provider  = Provider.of<AppConfigProvider>(context);
-    if(provider.tasklist.isEmpty){
-      provider.getAllTasksFromFireStore();
+    var listprovider  = Provider.of<ListProvider>(context);
+    if(listprovider.taskList.isEmpty){
+      listprovider.getAllTasksFromFireStore();
     }
 
     return Column(
       children: [
         EasyDateTimeLine(
-          initialDate: DateTime.now(),
+          initialDate: listprovider.selectDate,
           onDateChange: (selectedDate) {
             //`selectedDate` the new date selected.
+            listprovider.changeSelectDate(selectedDate);
           },
           headerProps: const EasyHeaderProps(
             monthPickerType: MonthPickerType.switcher,
@@ -53,11 +52,11 @@ class _TaskListTabState extends State<TaskListTab> {
         Expanded(
           child: ListView.builder(
             itemBuilder: (context, index) {
-              return TaskListItem(task: provider.tasklist[index],);
+              return TaskListItem(task: listprovider.taskList[index],);
               //return TaskListItem();
 
             },
-            itemCount: provider.tasklist.length,
+            itemCount: listprovider.taskList.length,
             //itemCount: 30,
           ),
         )

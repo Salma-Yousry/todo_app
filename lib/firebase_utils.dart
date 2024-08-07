@@ -22,6 +22,9 @@ var taskCollectionRef = getTaskCollection(); ///Collection
    //في حال مش عايزين ال id يكون auto
 ///DocumentReference<Task> taskDocRef = getTaskCollection().doc('12').set(task);
   }
+  static Future<void> deleteTaskFromFireStore(String id){
+return getTaskCollection().doc(id).delete();
+  }
 
 }
 

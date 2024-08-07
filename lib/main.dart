@@ -1,8 +1,14 @@
 
+
+
+
+
+
 import 'dart:io';
 
 import 'package:app_todo/home/home_screen.dart';
 import 'package:app_todo/providers/app_config_provider.dart';
+import 'package:app_todo/providers/listprovider.dart';
 import 'package:app_todo/theme_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,16 +34,21 @@ void main() async {
       Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
 
 
+  runApp(
+      MultiProvider(
+         providers: [
+           ChangeNotifierProvider(create: (context) => AppConfigProvider()),
+           ChangeNotifierProvider(create: (context)=> ListProvider()),
 
- runApp(
-      ChangeNotifierProvider(
-          create:(context) => AppConfigProvider() ,
+         ],
     child: MyApp()));
 }
 class MyApp  extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider  = Provider.of<AppConfigProvider>(context);
+    var Listprovider  = Provider.of<ListProvider>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: HomeScreen.route_name,
