@@ -6,6 +6,7 @@
 
 import 'dart:io';
 
+import 'package:app_todo/home/task_list/contant.dart';
 import 'package:app_todo/home/home_screen.dart';
 import 'package:app_todo/providers/app_config_provider.dart';
 import 'package:app_todo/providers/listprovider.dart';
@@ -54,6 +55,7 @@ class MyApp  extends StatelessWidget {
       initialRoute: HomeScreen.route_name,
       routes: {
    HomeScreen.route_name : (context)=>HomeScreen(),
+
       },
       theme: MyThemeData.LightTheme,
      // darkTheme: MyThemeData,

@@ -7,54 +7,69 @@ import 'package:provider/provider.dart';
 
 import '../../model/task.dart';
 import '../../providers/listprovider.dart';
+import 'contant.dart';
 
 class TaskListItem extends StatelessWidget {
 
   Task task;
- TaskListItem({required this.task});
+  TaskListItem({required this.task});
   @override
   Widget build(BuildContext context) {
     var listprovider  = Provider.of<ListProvider>(context);
     return Slidable(
-      // The start action pane is the one at the left or the top side.
       startActionPane: ActionPane(
         extentRatio: 0.25,
-        // A motion is a widget used to control how the pane animates.
-    motion: const ScrollMotion(),
+        motion: const ScrollMotion(),
 
-    children: [
-    // A SlidableAction can have an icon and/or a label.
-    SlidableAction(
-      borderRadius: BorderRadius.circular(15),
-    onPressed:(context){
+        children: [
+          SlidableAction(
+            borderRadius: BorderRadius.circular(15),
+            onPressed:(context) {
 //delete task
-    FireBaseUtils.deleteTaskFromFireStore(task.id)
-        .timeout(Duration(milliseconds: 500),onTimeout:(){
-          print('Task Deleted Successfully');
-          listprovider.getAllTasksFromFireStore();
-    });
-    },
-    backgroundColor:AppColors.redColor,
-    foregroundColor: AppColors.whiteColor,
-    icon: Icons.delete ,
-    label: 'Delete',
+              FireBaseUtils.deleteTaskFromFireStore(task.id)
+                  .then((value) {
+                print('Task Deleted Successfully');
+                listprovider.getAllTasksFromFireStore();
+              })
+                  .timeout(Duration(milliseconds: 500), onTimeout: () {
+                print('Task Deleted Successfully');
+                listprovider.getAllTasksFromFireStore();
+              });
+            },
+            backgroundColor:AppColors.redColor,
+            foregroundColor: AppColors.whiteColor,
+            icon: Icons.delete ,
+            label: 'Delete',
 
-    ),
+          ),
 
-      ],
-    ),
+        ],
+      ),
+        child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => contentTask(task: task),
+            ),
+
+          );
+
+        },
+
+
       child: Container(
         margin: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: AppColors.whiteColor
+            borderRadius: BorderRadius.circular(15),
+            color: AppColors.whiteColor
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              margin: EdgeInsets.all(12),
-              color: AppColors.primaryColor,
+              margin: EdgeInsets.all(9),
+              color: task.isDone ? AppColors.greenColor : AppColors.primaryColor,
               width: MediaQuery.of(context).size.height*0.009 ,
               height:MediaQuery.of(context).size.height*0.1 ,
             ),
@@ -64,7 +79,7 @@ class TaskListItem extends StatelessWidget {
                 children: [
                   SizedBox(height: 6,),
                   Text(task.title??'',style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppColors.primaryColor
+                    color: task.isDone ? AppColors.greenColor : AppColors.primaryColor,
                   ),),
                   SizedBox(height: 6,),
                   Text(task.description??'',style:Theme.of(context).textTheme.titleMedium),
@@ -76,16 +91,54 @@ class TaskListItem extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 4,horizontal: 9),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(18),
-                color: AppColors.primaryColor,
+                color: task.isDone ? AppColors.whiteColor : AppColors.primaryColor,
               ),
-              child: IconButton(onPressed: (){
 
-              }, icon: Icon(Icons.check,size: 36,),color: AppColors.whiteColor,),
-            ),
+
+              child: GestureDetector(
+                onTap: () {
+                  task.isDone = !task.isDone;
+                  FireBaseUtils.updateTaskStatus(task.id, task.isDone);
+                  listprovider.getAllTasksFromFireStore();
+                },
+                child: GestureDetector(
+                  onTap: () {
+                    // Update task status
+                    task.isDone = !task.isDone;
+                    FireBaseUtils.updateTaskStatus(task.id, task.isDone);
+                    listprovider.getAllTasksFromFireStore();
+                  },
+                  child: task.isDone
+                      ? Container(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                        'Done!',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontSize: 20,
+                            color: AppColors.greenColor
+                        )
+                    ),
+                  )
+                      : Icon(
+                    Icons.check,
+                    size: 36,
+                    color: AppColors.whiteColor,
+                  ),
+                ),
+              ),
+
+
+
+
+
+    ),
 
           ],
         ),
-      ),
+        ),
+    ),
+
     );
+
   }
 }

@@ -26,6 +26,20 @@ var taskCollectionRef = getTaskCollection(); ///Collection
 return getTaskCollection().doc(id).delete();
   }
 
+  static Future<void> updateTaskStatus(String taskId, bool isDone) async {
+    await FirebaseFirestore.instance.collection('tasks').doc(taskId).update({
+      'isDone': isDone,
+    });
+  }
+  static Future<void> updateTask(String taskId, String title, String description) async {
+    await FirebaseFirestore.instance.collection('tasks').doc(taskId).update({
+        'title': title,
+        'description': description,
+      });
+
+  }
+
+
 }
 
 ///firebase بتفهم حاجة اسمها json
