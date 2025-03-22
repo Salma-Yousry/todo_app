@@ -1,11 +1,11 @@
 class Task {
   static const String collectionName = 'tasks';
 
-  String? id;
-  String? title;
-  String? description;
-  DateTime? dateTime;
-  bool? isDone;
+  String id;
+  String title;
+  String description;
+  DateTime  dateTime;
+  bool isDone;
 
   Task(
       {this.id = '', required this.title, required this.description, required this.dateTime, this.isDone = false});
@@ -28,7 +28,7 @@ class Task {
       'title': title,
       'description': description,
       ///millisecondsSinceEpoch نخزنه integer
-      'dateTime': dateTime!.millisecondsSinceEpoch,
+      'dateTime': dateTime.millisecondsSinceEpoch,
       'isDone': isDone
     };
   }
